@@ -10,10 +10,13 @@
     var width = 500;
     var height = 500;
     var padding = 5;
+    var doping=[];
+    var time=[];
+    var rank =[]
     var url = "https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/cyclist-data.json";
 
 
-    var xScale = d3.time.scale().range([0,width]);
+    var xScale = d3.scale.linear().range([0,width]);
     var yScale = d3.scale.linear().range([height,0]);
 
     var svg = d3.select('#d3Wrapper')
@@ -24,7 +27,25 @@
                  .attr('transform','translate(' + padding + ',' + padding + ')');
 
     d3.json(url, function(error,data){
-    	console.log(data);
+        console.log(data);
+        for(var i =0; i<data.length;i++){
+            time.push(data[i].Seconds);
+            rank.push(data[i].Place);
+            doping.push(data[i].Doping);
+
+        }
+        console.log(time);
+        var xDomain = d3.extent(time,function(el){
+            return parseInt(el);
+        });
+        xScale.domain(xDomain);
+
+        var yDomain = d3.extent(rank,function(el){
+            return parseInt(el);
+        });
+
+        console.log(yDomain);
+
     });
 </script>
 </body>
