@@ -2,21 +2,31 @@
 <html>
 <head>
 	<title>Doping Cyclist</title>
+    <style type="text/css">
+
+        .cir{
+            padding: 50px; 
+        }
+     
+   
+
+
+    </style>
 </head>
 <body>
 	<div id ="d3Wrapper"></div>
 <script src = "http://d3js.org/d3.v3.min.js"></script>
 <script type="text/javascript">
-    var width = 500;
-    var height = 500;
-    var padding = 5;
+    var width = 900;
+    var height = 900;
+    var margin = 2;
     var doping=[];
     var time=[];
     var rank =[]
     var url = "https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/cyclist-data.json";
 
 
-    var xScale = d3.scale.linear().range([0,width]);
+    var xScale = d3.scale.linear().range([width,0]);
     var yScale = d3.scale.linear().range([height,0]);
 
     var svg = d3.select('#d3Wrapper')
@@ -24,14 +34,14 @@
                  .attr('width',width)
                  .attr('height',height)
                  .append('g')
-                 .attr('transform','translate(' + padding + ',' + padding + ')');
+                 .attr('transform','translate(' + margin + ',' + margin + ')');
 
     d3.json(url, function(error,data){
         console.log(data);
         for(var i =0; i<data.length;i++){
             time.push(data[i].Seconds);
             rank.push(data[i].Place);
-            doping.push(data[i].Doping);
+            //doping.push(data[i].Doping);
 
         }
         console.log(time);
@@ -45,6 +55,41 @@
         });
 
         console.log(yDomain);
+
+        // grouped element to dots
+        var dots = svg.selectAll("g.dots")
+                .data(data)
+                .enter()
+                .append('g')
+                    .attr('class','dots');
+        dots.attr("transform",function(d){
+            x = xScale(d.Seconds);
+            y = d.Place * 20;
+            console.log(y,x);
+            return 'translate(' + x + ',' + y + ')';
+
+        });
+
+        dots.append('circle')
+            .attr("class","cir")
+            .attr("r","7")
+            .attr("fill",function(d){
+                if (d.Doping == ""){
+                    return "black";
+                }
+                else{
+                    return "red";
+                }
+            });
+            dots.append("text")
+                .text(function(d,i){
+                    return d.Name;
+
+                })
+                .attr("fill","teal")
+                .style("display","inline-block")
+                ;
+
 
     });
 </script>
