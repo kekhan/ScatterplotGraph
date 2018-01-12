@@ -14,20 +14,19 @@
     </style>
 </head>
 <body>
+    <h1>Doping Cyclist</h1>
 	<div id ="d3Wrapper"></div>
 <script src = "http://d3js.org/d3.v3.min.js"></script>
 <script type="text/javascript">
-    var width = 900;
-    var height = 900;
+    var width = 500;
+    var height = 500;
     var margin = 2;
     var doping=[];
     var time=[];
     var rank =[]
+    var padding = 30;
     var url = "https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/cyclist-data.json";
 
-
-    var xScale = d3.scale.linear().range([width,0]);
-    var yScale = d3.scale.linear().range([height,0]);
 
     var svg = d3.select('#d3Wrapper')
                  .append('svg')
@@ -35,6 +34,7 @@
                  .attr('height',height)
                  .append('g')
                  .attr('transform','translate(' + margin + ',' + margin + ')');
+
 
     d3.json(url, function(error,data){
         console.log(data);
@@ -44,6 +44,18 @@
             //doping.push(data[i].Doping);
 
         }
+
+    var xScale = d3.scale.linear().range([0,width]);
+    var yScale = d3.scale.linear().range([height,0]);
+    // Set up the x axis
+        var xAxis = d3.svg.axis().scale(xScale)
+                        .orient("bottom")
+                        .ticks(8);
+        // Set up the y axis 
+        var yAxis = d3.svg.axis().scale(yScale)
+                    .orient("right")
+                    .ticks(15);
+
         console.log(time);
         var xDomain = d3.extent(time,function(el){
             return parseInt(el);
@@ -53,8 +65,7 @@
         var yDomain = d3.extent(rank,function(el){
             return parseInt(el);
         });
-
-        console.log(yDomain);
+        yScale.domain(yDomain);
 
         // grouped element to dots
         var dots = svg.selectAll("g.dots")
@@ -64,7 +75,7 @@
                     .attr('class','dots');
         dots.attr("transform",function(d){
             x = xScale(d.Seconds);
-            y = d.Place * 20;
+            y = yScale(d.Place);
             console.log(y,x);
             return 'translate(' + x + ',' + y + ')';
 
@@ -75,7 +86,7 @@
             .attr("r","7")
             .attr("fill",function(d){
                 if (d.Doping == ""){
-                    return "black";
+                    return "blue";
                 }
                 else{
                     return "red";
@@ -87,8 +98,21 @@
 
                 })
                 .attr("fill","teal")
-                .style("display","inline-block")
-                ;
+                .style("display","inline-block");
+
+         // x axis
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + 
+                (height-padding)+ ")")
+            .call(xAxis);
+
+          //the y axis
+        svg.append("g")
+            .attr("class", "y axis")
+            .attr("transform", "translate(" + 0 + ",0)")
+            .call(yAxis);
+
 
 
     });
