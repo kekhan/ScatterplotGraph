@@ -7,6 +7,13 @@
         .cir{
             padding: 50px; 
         }
+        #d3Wrapper{
+            border-radius: 5%;
+            background-color: gray;
+        }
+        body{
+            background-color: yellow;
+        }
      
    
 
@@ -18,13 +25,13 @@
 	<div id ="d3Wrapper"></div>
 <script src = "http://d3js.org/d3.v3.min.js"></script>
 <script type="text/javascript">
-    var width = 500;
-    var height = 500;
-    var margin = 2;
+    var margin = 0,
+        width = 700,
+        height = 600;
     var doping=[];
     var time=[];
     var rank =[]
-    var padding = 30;
+    var padding = 20;
     var url = "https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/cyclist-data.json";
 
 
@@ -45,16 +52,16 @@
 
         }
 
-    var xScale = d3.scale.linear().range([0,width]);
-    var yScale = d3.scale.linear().range([height,0]);
+    var xScale = d3.scale.linear().range([width,0]);
+    var yScale = d3.scale.linear().range([0,height]);
     // Set up the x axis
         var xAxis = d3.svg.axis().scale(xScale)
                         .orient("bottom")
-                        .ticks(8);
+                        .ticks(10);
         // Set up the y axis 
         var yAxis = d3.svg.axis().scale(yScale)
                     .orient("right")
-                    .ticks(15);
+                    .ticks(10);
 
         console.log(time);
         var xDomain = d3.extent(time,function(el){
@@ -92,13 +99,27 @@
                     return "red";
                 }
             });
-            dots.append("text")
-                .text(function(d,i){
-                    return d.Name;
+
+            dots.append('text')
+                .text(function(d){
+                    return d.Name + " " + d.Doping;
 
                 })
-                .attr("fill","teal")
-                .style("display","inline-block");
+                .style('position','absolute')
+                .style('display','none');
+
+            dots.on("mouseenter",function(d,i){
+                dot = d3.select(this);
+                dot.select('text')
+                    .style('display','inline-block');
+                
+            });
+
+            dots.on("mouseleave",function(d,i){
+                d3.select(this)
+                    .select('text')
+                    .style("display","none");
+            });
 
          // x axis
         svg.append("g")
@@ -110,7 +131,7 @@
           //the y axis
         svg.append("g")
             .attr("class", "y axis")
-            .attr("transform", "translate(" + 0 + ",0)")
+            .attr("transform", "translate(" + 0 + ",-10)")
             .call(yAxis);
 
 
