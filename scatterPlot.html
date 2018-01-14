@@ -25,20 +25,20 @@
 	<div id ="d3Wrapper"></div>
 <script src = "http://d3js.org/d3.v3.min.js"></script>
 <script type="text/javascript">
-    var margin = 0,
+    var margin = 10,
         width = 700,
         height = 600;
     var doping=[];
     var time=[];
     var rank =[]
-    var padding = 20;
+    var padding = 10;
     var url = "https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/cyclist-data.json";
 
 
     var svg = d3.select('#d3Wrapper')
                  .append('svg')
-                 .attr('width',width)
-                 .attr('height',height)
+                 .attr('width',width+padding+margin+100)
+                 .attr('height',height+padding+margin+100)
                  .append('g')
                  .attr('transform','translate(' + margin + ',' + margin + ')');
 
@@ -102,7 +102,7 @@
 
             dots.append('text')
                 .text(function(d){
-                    return d.Name + " " + d.Doping;
+                    return d.Name + ", " + d.Doping;
 
                 })
                 .style('position','absolute')
