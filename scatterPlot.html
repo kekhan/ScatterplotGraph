@@ -14,6 +14,12 @@
         body{
             background-color: yellow;
         }
+
+        text{
+            width: 20px;
+            height: 20px;
+            color: red;
+        }
      
    
 
@@ -115,6 +121,9 @@
                     return d.Name + ", " + d.Doping;
 
                 })
+                .attr("x","10")
+                .attr("y","5")
+                .style("font-size","1rem")
                 .style('position','absolute')
                 .style('display','none');
                     
