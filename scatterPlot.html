@@ -117,12 +117,13 @@
             });
 
             dots.append('text')
+                .attr("y",".5em")
+                .attr("x","0em")
+                .style("text-anchor","middle")
                 .text(function(d){
-                    return d.Name + ", " + d.Doping;
+                    return d.Name +"\r\r"+ d.Doping;
 
                 })
-                .attr("x","10")
-                .attr("y","5")
                 .style("font-size","1rem")
                 .style('position','absolute')
                 .style('display','none');
